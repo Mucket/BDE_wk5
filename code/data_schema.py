@@ -1,7 +1,7 @@
 from pyspark.sql.types import StringType,  StructType, StructField, \
     TimestampType, LongType, BooleanType, DoubleType, IntegerType, ArrayType
 
-# Schema of the data gathered from the 'valid' topic
+# Schema of the input gathered from the 'valid' topic
 valid_data_schema = StructType(fields=[
     StructField(name='visit_id', dataType=StringType(), nullable=True),
     StructField(name='event_time', dataType=TimestampType(), nullable=False),
@@ -34,35 +34,16 @@ valid_data_schema = StructType(fields=[
 
 # Schema of the session after combining events to a session
 session_schema = StructType(fields=[
-    StructField(name='session_id',dataType=StringType(), nullable=True),
-    StructField(name='start_time', dataType=StringType(), nullable=True),
-    StructField(name='duration_seconds', dataType=IntegerType(), nullable=True),
-    StructField(name='user_id', dataType=LongType(), nullable=True),
-    StructField(name='pages', dataType=ArrayType(
-        StructType([
-            StructField(name='page', dataType=StructType([
-                StructField(name='name', dataType=StringType(), nullable=True),
-                StructField(name='event_time', dataType=TimestampType(), nullable=True)
-        ]), nullable=True)
-    ])), nullable=True),
-    StructField(name='source', dataType=StructType([
-        StructField(name='site', dataType=StringType(), nullable=True),
-        StructField(name='api_version', dataType=StringType(), nullable=True)
-    ]), nullable=True)
-])
-
-# Schema of the session after combining events to a session
-session_schema_actual = StructType(fields=[
     StructField(name='session_id',dataType=StringType(), nullable=False),
-    StructField(name='start_time', dataType=StringType(), nullable=False),
-    StructField(name='duration_seconds', dataType=IntegerType(), nullable=False),
+    StructField(name='start_time', dataType=TimestampType(), nullable=False),
+    StructField(name='duration_seconds', dataType=IntegerType(), nullable=True),
     StructField(name='user_id', dataType=LongType(), nullable=False),
     StructField(name='pages', dataType=ArrayType(
         StructType([
             StructField(name='page', dataType=StructType([
                 StructField(name='name', dataType=StringType(), nullable=False),
                 StructField(name='event_time', dataType=TimestampType(), nullable=False)
-        ]), nullable=False)
+        ]), nullable=True)
     ])), nullable=True),
     StructField(name='source', dataType=StructType([
         StructField(name='site', dataType=StringType(), nullable=False),

@@ -10,3 +10,5 @@ for item in list_of_dicts:
     print(item)
 
 print(min(item['age'] for item in list_of_dicts))
+
+print(sorted(list_of_dicts, key=lambda d: d['age']))
